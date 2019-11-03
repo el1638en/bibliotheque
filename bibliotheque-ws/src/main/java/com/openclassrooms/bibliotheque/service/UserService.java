@@ -4,5 +4,7 @@ import com.openclassrooms.bibliotheque.models.User;
 
 public interface UserService {
 
-    User findByNameAndPassword(String name, String password);
+    User findByLoginAndPassword(String login, String password);
+
+    User create(User user);
 }

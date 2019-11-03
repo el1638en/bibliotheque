@@ -17,6 +17,21 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="createUserRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="tns:user"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createUserResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+                        <xs:element name="user" type="tns:user"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:complexType name="serviceStatus">
                 <xs:sequence>
                     <xs:element name="status" type="tns:status"/>
@@ -45,10 +60,20 @@
     <wsdl:message name="getUserByLoginAndPasswordRequest">
         <wsdl:part element="tns:getUserByLoginAndPasswordRequest" name="getUserByLoginAndPasswordRequest"> </wsdl:part>
     </wsdl:message>
+    <wsdl:message name="createUserRequest">
+        <wsdl:part element="tns:createUserRequest" name="createUserRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createUserResponse">
+        <wsdl:part element="tns:createUserResponse" name="createUserResponse"> </wsdl:part>
+    </wsdl:message>
     <wsdl:portType name="BibliothequePort">
         <wsdl:operation name="getUserByLoginAndPassword">
             <wsdl:input message="tns:getUserByLoginAndPasswordRequest" name="getUserByLoginAndPasswordRequest"> </wsdl:input>
             <wsdl:output message="tns:getUserByLoginAndPasswordResponse" name="getUserByLoginAndPasswordResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <wsdl:input message="tns:createUserRequest" name="createUserRequest"> </wsdl:input>
+            <wsdl:output message="tns:createUserResponse" name="createUserResponse"> </wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="BibliothequePortSoap11" type="tns:BibliothequePort">
@@ -59,6 +84,15 @@
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="getUserByLoginAndPasswordResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="createUserRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="createUserResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>

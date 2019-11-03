@@ -2,7 +2,7 @@ package com.openclassrooms.bibliotheque.controllers;
 
 import com.openclassrooms.bibliotheque.models.Login;
 import com.openclassrooms.bibliotheque.service.UserService;
-import com.openclassrooms.bibliotheque.ws.User;
+import com.openclassrooms.bibliotheque.ws.UserWs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +26,10 @@ public class LoginController {
 
     @PostMapping(path = "/login")
     public String login(Model model, @ModelAttribute("login") Login login) {
-        User user = userService.findUser(login.getLogin(), login.getPassword());
-        if (user != null) {
-            model.addAttribute("message", "Hello Mister " + user.getFirstName() + " "+ user.getName());
+//        User user = userService.create(login.getLogin(), "FISRT_NAME_TEST", "NAME_TEST", login.getPassword());
+        UserWs userWs = userService.findUser(login.getLogin(), login.getPassword());
+        if (userWs != null) {
+            model.addAttribute("message", "Hello Mister " + userWs.getFirstName() + " "+ userWs.getName());
         } else {
             model.addAttribute("message", "Wrong login and/or password.");
         }

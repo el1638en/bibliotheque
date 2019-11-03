@@ -1,16 +1,15 @@
 package com.openclassrooms.bibliotheque.soap;
 
-import com.openclassrooms.bibliotheque.repository.UserRepository;
+import com.openclassrooms.bibliotheque.models.User;
+import com.openclassrooms.bibliotheque.service.UserService;
 import com.openclassrooms.projects.bibliotheque.*;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import static com.openclassrooms.projects.bibliotheque.Status.NOT_FOUND;
-import static com.openclassrooms.projects.bibliotheque.Status.SUCCESS;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
 @Endpoint
 public class UserEndpoint {
@@ -18,24 +17,34 @@ public class UserEndpoint {
     private static final String NAMESPACE_URI = "http://openclassrooms.com/projects/bibliotheque";
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getUserByLoginAndPasswordRequest")
     @ResponsePayload
-    public GetUserByLoginAndPasswordResponse getUserByNameAndPassword(@RequestPayload GetUserByLoginAndPasswordRequest request) {
+    public GetUserByLoginAndPasswordResponse getUserByLoginAndPassword(@RequestPayload GetUserByLoginAndPasswordRequest request) {
         GetUserByLoginAndPasswordResponse response = new GetUserByLoginAndPasswordResponse();
-        ServiceStatus serviceStatus = new ServiceStatus();
-        com.openclassrooms.bibliotheque.models.User findUser = userRepository.findByNameAndPassword(request.getLogin(), request.getPassword());
-        if (findUser == null) {
-            serviceStatus.setStatus(NOT_FOUND);
-        } else {
-            serviceStatus.setStatus(SUCCESS);
-            User user = new User();
-            BeanUtils.copyProperties(findUser, user);
-            response.setUser(user);
+        User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
+        if (user != null) {
+            UserWs userWs = new UserWs();
+            copyProperties(user, userWs);
+            response.setUserWs(userWs);
         }
-        response.setServiceStatus(serviceStatus);
         return response;
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createUserRequest")
+    @ResponsePayload
+    public CreateUserResponse createUser(@RequestPayload CreateUserRequest request) {
+        CreateUserResponse createUserResponse = new CreateUserResponse();
+        User user = new User();
+        copyProperties(request.getUserWs(), user);
+        User userCreated = userService.create(user);
+        if (userCreated != null) {
+            UserWs userWs = new UserWs();
+            copyProperties(userCreated, userWs);
+            createUserResponse.setUserWs(userWs);
+        }
+        return createUserResponse;
     }
 }

@@ -13,33 +13,36 @@
     <xs:element name="getUserByLoginAndPasswordResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="serviceStatus" type="tns:serviceStatus"/>
-                <xs:element name="user" type="tns:user"/>
+                <xs:element name="userWs" type="tns:userWs"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:complexType name="serviceStatus">
-        <xs:sequence>
-            <xs:element name="status" type="tns:status"/>
-            <xs:element name="message" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
 
-    <xs:complexType name="user">
+    <xs:element name="createUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userWs" type="tns:userWs"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="createUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="userWs" type="tns:userWs"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="userWs">
         <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="firstName" type="xs:string"/>
             <xs:element name="login" type="xs:string"/>
             <xs:element name="password" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
-
-    <xs:simpleType name="status">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="SUCCESS" />
-            <xs:enumeration value="NOT_FOUND" />
-        </xs:restriction>
-    </xs:simpleType>
 
 </xs:schema>

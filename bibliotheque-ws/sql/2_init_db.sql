@@ -41,10 +41,11 @@ VALUES ('clement', 'CLEMENT', 'clement', 'biotteau'),
 -- creation table member
 create table T_MEMBER
 (
+    M_ID       SERIAL,
     M_NAME VARCHAR(50)  NOT NULL,
     M_FIRST_NAME VARCHAR(50)  NOT NULL,
     M_MAIL VARCHAR(100) NOT NULL,
-    PRIMARY KEY (M_NAME, M_FIRST_NAME, M_MAIL) -- Définition de la clé primaire de la table
+    PRIMARY KEY (M_ID) -- Définition de la clé primaire de la table
 );
 
 INSERT INTO T_MEMBER (M_NAME, M_FIRST_NAME, M_MAIL)
@@ -61,18 +62,6 @@ create table T_LIBRARY
     PRIMARY KEY (L_ID) -- Définition de la clé primaire de la table
 );
 
--- creation table borrow
-create table T_BORROW
-(
-    B_ID                SERIAL,
-    B_STATUS            VARCHAR(100) NOT NULL,
-    B_START_BORROW_DATE DATE         NOT NULL,
-    B_END_BORROW_DATE   DATE         NOT NULL,
-    B_EXTENDED          BOOLEAN      NOT NULL,
-    B_WORK_TITLE        VARCHAR(100) NOT NULL,
-    PRIMARY KEY (B_ID) -- Définition de la clé primaire de la table
-);
-
 -- creation table book
 create table T_BOOK
 (
@@ -82,10 +71,10 @@ create table T_BOOK
 );
 
 INSERT INTO T_BOOK (BOOK_AVAILABLE)
-VALUES ('false'),
-       ('false'),
-       ('false'),
-       ('false'),
+VALUES ('true'),
+       ('true'),
+       ('true'),
+       ('true'),
        ('true'),
        ('true'),
        ('true'),
@@ -103,13 +92,25 @@ VALUES ('false'),
        ('true'),
        ('true');
 
+-- creation table borrow
+create table T_BORROW
+(
+    B_ID                SERIAL,
+    B_STATUS            VARCHAR(100) NOT NULL,
+    B_START_BORROW_DATE DATE         NOT NULL,
+    B_END_BORROW_DATE   DATE         NOT NULL,
+    B_EXTENDED          BOOLEAN      NOT NULL,
+    B_WORK_TITLE        VARCHAR(100) NOT NULL,
+    B_MEMBER_ID         INTEGER REFERENCES T_MEMBER(M_ID),
+    B_BOOK_ID           INTEGER REFERENCES T_BOOK(BOOK_ID),
+    PRIMARY KEY (B_ID) -- Définition de la clé primaire de la table
+);
 
 -- creation table work_book
 create table T_WORK_BOOK
 (
     WB_BOOK_ID INTEGER REFERENCES T_BOOK(BOOK_ID),
     WB_WORK_ID INTEGER REFERENCES T_WORK(W_ID),
-
     PRIMARY KEY (WB_BOOK_ID) -- Définition de la clé primaire de la table
 
 
