@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:gs="http://openclassrooms.com/projects/bibliotheque">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <gs:getUserByLoginAndPasswordRequest>
+            <gs:login>clement</gs:login>
+            <gs:password>CLEMENT</gs:password>
+        </gs:getUserByLoginAndPasswordRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

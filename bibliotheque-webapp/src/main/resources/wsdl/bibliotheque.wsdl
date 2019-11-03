@@ -1,0 +1,71 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://openclassrooms.com/projects/bibliotheque" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://openclassrooms.com/projects/bibliotheque" targetNamespace="http://openclassrooms.com/projects/bibliotheque">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://openclassrooms.com/projects/bibliotheque">
+            <xs:element name="getUserByLoginAndPasswordRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="login" type="xs:string"/>
+                        <xs:element name="password" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUserByLoginAndPasswordResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceStatus" type="tns:serviceStatus"/>
+                        <xs:element name="user" type="tns:user"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="serviceStatus">
+                <xs:sequence>
+                    <xs:element name="status" type="tns:status"/>
+                    <xs:element name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="user">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="login" type="xs:string"/>
+                    <xs:element name="password" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="status">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="SUCCESS"/>
+                    <xs:enumeration value="NOT_FOUND"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getUserByLoginAndPasswordResponse">
+        <wsdl:part element="tns:getUserByLoginAndPasswordResponse" name="getUserByLoginAndPasswordResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUserByLoginAndPasswordRequest">
+        <wsdl:part element="tns:getUserByLoginAndPasswordRequest" name="getUserByLoginAndPasswordRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="BibliothequePort">
+        <wsdl:operation name="getUserByLoginAndPassword">
+            <wsdl:input message="tns:getUserByLoginAndPasswordRequest" name="getUserByLoginAndPasswordRequest"> </wsdl:input>
+            <wsdl:output message="tns:getUserByLoginAndPasswordResponse" name="getUserByLoginAndPasswordResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BibliothequePortSoap11" type="tns:BibliothequePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getUserByLoginAndPassword">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getUserByLoginAndPasswordRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getUserByLoginAndPasswordResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="BibliothequePortService">
+        <wsdl:port binding="tns:BibliothequePortSoap11" name="BibliothequePortSoap11">
+            <soap:address location="http://localhost:8080/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
